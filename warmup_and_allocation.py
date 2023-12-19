@@ -64,7 +64,6 @@ def warmup_question_genreation(criteria,skills):
 
                 )
             
-            print(response['choices'][0]['message']['content'])
             
             return json.loads(response['choices'][0]['message']['content'])
         except Exception as e:
@@ -112,7 +111,6 @@ def warmup_validation(criteria, skills, answer):
             response_content = json.loads(response_content)
             output["criteria"] = criteria
             output["skills"] = response_content
-            print(output)
             return output
         except Exception as e:
             n += 1
@@ -167,9 +165,7 @@ def question_allocation(criteria_wise_questions,criteria_skill_dictionary,known_
             num_of_question_must_have_skills = max(0, round(Number_of_questions_criteria_wise * must_have_percentage))
             num_of_question_other_high_priority_skills = max(0, round(Number_of_questions_criteria_wise * other_high_priority_percentage))
             num_of_question_other_low_priority_skills = Number_of_questions_criteria_wise - num_of_question_must_have_skills - num_of_question_other_high_priority_skills
-            print(num_of_question_must_have_skills)
-            print(num_of_question_other_high_priority_skills)
-            print(num_of_question_other_low_priority_skills)
+            
             if num_of_question_must_have_skills != 0:
                 n = 0
                 while n < num_of_question_must_have_skills:
@@ -293,7 +289,7 @@ def question_allocation(criteria_wise_questions,criteria_skill_dictionary,known_
                             break
 
             if num_of_question_other_low_priority_skills != 0:
-                print('dh')
+                
                 n = 0
                 while n < num_of_question_other_low_priority_skills:
                     for i in other_low_priority:
@@ -352,7 +348,7 @@ def question_allocation(criteria_wise_questions,criteria_skill_dictionary,known_
                         n += 1
                         if n >= num_of_question_other_low_priority_skills:
                             break
-        print(final_output)
+       
     return final_output
 
 
@@ -389,7 +385,7 @@ def warmup_question_validation(payload : necessary_details):
     initializer = 1
 
     categories = sorted(criteria_wise_questions.keys(), key=lambda k: criteria_wise_questions[k], reverse=True)
-    print(categories)
+    
     while initializer <= total_number_of_questions:
         for key in categories:
             criteria_wise_questions[key] += 1
@@ -428,7 +424,7 @@ def warmup_question_generation(payload : Resume_parser):
         else:
             criteria_skill_dictionary[i['criteria']] =  [i['skill']]
 
-    print(criteria_skill_dictionary)
+  
     op = []
     for i in criteria_skill_dictionary:
         x = warmup_question_genreation(i,criteria_skill_dictionary[i])
@@ -437,10 +433,10 @@ def warmup_question_generation(payload : Resume_parser):
 
 @app.post("/warmup_answer_validation")
 def warmup_question_validation(payload : candidate_response):
-    print('start')
+    
     candidate_response = payload.Answer
     result = []
-    print(candidate_response)
+    
     for i in candidate_response:
         print(i)
         validation_gpt = warmup_validation(i['criteria'],i['skills'],i['answer'])
